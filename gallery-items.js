@@ -1,4 +1,4 @@
-export default [
+const galleryItems = [
   {
     preview:
       'https://cdn.pixabay.com/photo/2019/05/14/16/43/himilayan-blue-poppy-4202825__340.jpg',
@@ -63,3 +63,57 @@ export default [
     description: 'Lighthouse Coast Sea',
   },
 ];
+// --------------REFS----------------------
+const refs = {
+  lightbox: document.querySelector('.js-lightbox'),
+  galleryContainer: document.querySelector('.js-gallery'),
+  lightBoxImage: document.querySelector('.lightbox__image'),
+  closeBtn: document.querySelector('.lightbox__button'),
+  overlay: document.querySelector('.lightbox__overlay'),
+};
+// ----------------GALLERY MARKUP------------------------
+const makeGallery = ({ preview, original, description }) => {
+  return `<li class="gallery__item">
+  <a
+    class="gallery__link"
+    href=${original}
+  >
+    <img
+      class="gallery__image"
+      src=${preview}
+      data-source=${original}      
+      alt='${description}'
+    />
+  </a>
+</li>`;
+};
+// -------------------------------
+const gallery = galleryItems.map(makeGallery);
+refs.galleryContainer.insertAdjacentHTML('afterbegin', gallery.join(''));
+
+refs.galleryContainer.addEventListener('click', event => {
+  event.preventDefault();
+  //   console.log(event.target.dataset);
+  //   console.dir(event.target.nodeName);
+  if (event.target.nodeName === 'IMG') {
+    refs.lightbox.classList.add('is-open');
+    console.dir(event.target);
+    refs.lightBoxImage.src = event.target.dataset.source;
+  }
+});
+
+refs.closeBtn.addEventListener('click', () => {
+  refs.lightbox.classList.remove('is-open');
+  refs.lightBoxImage.src = '';
+});
+refs.overlay.addEventListener('click', () => {
+  refs.lightbox.classList.remove('is-open');
+  refs.lightBoxImage.src = '';
+});
+window.addEventListener('keydown', event => {
+  console.log(event.key);
+  if (event.key === 'Escape') {
+    refs.lightbox.classList.remove('is-open');
+    refs.lightBoxImage.src = '';
+  }
+});
