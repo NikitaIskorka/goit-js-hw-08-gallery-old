@@ -99,21 +99,23 @@ refs.galleryContainer.addEventListener('click', event => {
     refs.lightbox.classList.add('is-open');
     console.dir(event.target);
     refs.lightBoxImage.src = event.target.dataset.source;
+    window.addEventListener('keydown', closeOnEsc);
   }
 });
 
-refs.closeBtn.addEventListener('click', () => {
+function closeLightBox() {
   refs.lightbox.classList.remove('is-open');
   refs.lightBoxImage.src = '';
-});
-refs.overlay.addEventListener('click', () => {
-  refs.lightbox.classList.remove('is-open');
-  refs.lightBoxImage.src = '';
-});
-window.addEventListener('keydown', event => {
+}
+
+refs.closeBtn.addEventListener('click', closeLightBox);
+refs.overlay.addEventListener('click', closeLightBox);
+
+function closeOnEsc(event) {
   console.log(event.key);
   if (event.key === 'Escape') {
     refs.lightbox.classList.remove('is-open');
     refs.lightBoxImage.src = '';
+    window.removeEventListener('keydown', closeOnEsc);
   }
-});
+}
