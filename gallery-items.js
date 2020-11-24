@@ -106,6 +106,7 @@ refs.galleryContainer.addEventListener('click', event => {
 function closeLightBox() {
   refs.lightbox.classList.remove('is-open');
   refs.lightBoxImage.src = '';
+  window.removeEventListener('keydown', closeOnEsc);
 }
 
 refs.closeBtn.addEventListener('click', closeLightBox);
@@ -114,8 +115,6 @@ refs.overlay.addEventListener('click', closeLightBox);
 function closeOnEsc(event) {
   console.log(event.key);
   if (event.key === 'Escape') {
-    refs.lightbox.classList.remove('is-open');
-    refs.lightBoxImage.src = '';
-    window.removeEventListener('keydown', closeOnEsc);
+    closeLightBox();
   }
 }
